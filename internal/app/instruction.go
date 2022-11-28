@@ -1,3 +1,3 @@
 package app
 
-type Instruction [4]byte
+type Instruction byte
