@@ -29,35 +29,40 @@ func NewCPU() CPU {
 	}
 }
 
-func (c *CPU) fetch() string {
+func (c *CPU) fetch() Instruction {
 	fmt.Println("Fetch")
 	return c.rom.Fetch()
 }
 
-func (c *CPU) decode(instruction string) (Opecode, Immidiate) {
+func (c *CPU) decode(i Instruction) (Opecode, Immidiate) {
 	fmt.Println("Decode")
-	return c.decoder.Decode(instruction)
+	return c.decoder.Decode(i)
 }
 
-func (c *CPU) execute(opecode Opecode, immidiate Immidiate) {
+func (c *CPU) execute(o Opecode, i Immidiate) error {
 	fmt.Println("Execute")
 
 	// TODO main processing
-	switch opecode {
+	switch o {
 	case MOV_A:
 		// TODO MOV_A function call
+		return nil
 	case MOV_B:
 		// TODO ...
+		return nil
 	default:
-		fmt.Println("Error opecode exist!")
+		return fmt.Errorf("Error opecode exist!")
 	}
 }
 
 func (c *CPU) Run() {
 	for {
-		instruction := c.fetch()
-		opecode, immidiate := c.decode(instruction)
-		c.execute(opecode, immidiate)
+		inst := c.fetch()
+		ope, imm := c.decode(inst)
+		err := c.execute(ope, imm)
+		if err != nil {
+			return
+		}
 
 		time.Sleep(time.Millisecond * 100)
 	}

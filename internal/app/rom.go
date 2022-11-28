@@ -6,6 +6,6 @@ func NewROM() ROM {
 	return ROM{}
 }
 
-func (r *ROM) Fetch() string {
-	return "test" // TODO
+func (r *ROM) Fetch() Instruction {
+	return [4]byte{1} // TODO
 }
