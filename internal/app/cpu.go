@@ -29,9 +29,18 @@ func NewCPU() CPU {
 	}
 }
 
-func (c *CPU) fetch() Instruction {
+func (c *CPU) waitClockUp() {
+	time.Sleep(time.Millisecond * 100)
+}
+
+func (c *CPU) incrementPC() {
+	v := c.pc.value()
+	c.pc.setValue(v + 1) // TODO when overflow
+}
+
+func (c *CPU) fetch(a Adress) Instruction {
 	fmt.Println("Fetch")
-	return c.rom.Fetch()
+	return c.rom.Fetch(a)
 }
 
 func (c *CPU) decode(i Instruction) (Opecode, Immidiate) {
@@ -57,13 +66,21 @@ func (c *CPU) execute(o Opecode, i Immidiate) error {
 
 func (c *CPU) Run() {
 	for {
-		inst := c.fetch()
+		// fetch program from ROM
+		ad := Adress(c.pc.value())
+		inst := c.fetch(ad)
+
+		// analyze fetch data
 		ope, imm := c.decode(inst)
+
+		// execute program
 		err := c.execute(ope, imm)
 		if err != nil {
 			return
 		}
 
-		time.Sleep(time.Millisecond * 100)
+		// wait and PC count up for next loop
+		c.waitClockUp()
+		c.incrementPC()
 	}
 }
