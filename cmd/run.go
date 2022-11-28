@@ -1,12 +1,12 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
 
+	"github.com/Tatsu015/gotd4.git/internal/app"
 	"github.com/spf13/cobra"
 )
 
@@ -27,6 +27,8 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(runCmd)
+	cpu := app.NewCPU()
+	cpu.Run()
 
 	// Here you will define your flags and configuration settings.
 

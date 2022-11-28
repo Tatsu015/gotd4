@@ -1,3 +1,7 @@
 package app
 
-type Rom struct{}
+type ROM struct{}
+
+func NewROM() ROM {
+	return ROM{}
+}
