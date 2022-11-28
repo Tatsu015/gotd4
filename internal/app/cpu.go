@@ -12,6 +12,8 @@ type CPU struct {
 	pc      Register
 	decoder Decoder
 	rom     ROM
+	in      IO
+	out     IO
 }
 
 func NewCPU() CPU {
@@ -22,6 +24,8 @@ func NewCPU() CPU {
 		pc:      NewRegister(),
 		decoder: NewDecoder(),
 		rom:     NewROM(),
+		in:      NewIO(),
+		out:     NewIO(),
 	}
 }
 
