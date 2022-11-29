@@ -29,11 +29,11 @@ type CPU struct {
 	pc      Register
 	decoder Decoder
 	rom     ROM
-	in      IO
-	out     IO
+	input   IO
+	output  IO
 }
 
-func NewCPU(rom ROM, in IO, out IO) CPU {
+func NewCPU(rom ROM, input IO, output IO) CPU {
 	return CPU{
 		a:       NewRegister(),
 		b:       NewRegister(),
@@ -41,10 +41,23 @@ func NewCPU(rom ROM, in IO, out IO) CPU {
 		pc:      NewRegister(),
 		decoder: NewDecoder(),
 		rom:     rom,
-		in:      in,
-		out:     out,
+		input:   input,
+		output:  output,
 	}
 }
+
+func (c *CPU) add_a(i Immidiate)  { fmt.Println(i) }
+func (c *CPU) mov_ab(i Immidiate) { fmt.Println(i) }
+func (c *CPU) in_a(i Immidiate)   { fmt.Println(i) }
+func (c *CPU) mov_a(i Immidiate)  { fmt.Println(i) }
+func (c *CPU) mov_ba(i Immidiate) { fmt.Println(i) }
+func (c *CPU) add_b(i Immidiate)  { fmt.Println(i) }
+func (c *CPU) in_b(i Immidiate)   { fmt.Println(i) }
+func (c *CPU) mov_b(i Immidiate)  { fmt.Println(i) }
+func (c *CPU) out_b(i Immidiate)  { fmt.Println(i) }
+func (c *CPU) out(i Immidiate)    { fmt.Println(i) }
+func (c *CPU) jmp(i Immidiate)    { fmt.Println(i) }
+func (c *CPU) jnc(i Immidiate)    { fmt.Println(i) }
 
 func (c *CPU) waitClockUp() {
 	time.Sleep(time.Millisecond * 100)
@@ -71,11 +84,41 @@ func (c *CPU) execute(o Opecode, i Immidiate) error {
 
 	// TODO main processing
 	switch o {
+	case ADD_A:
+		c.add_a(i)
+		return nil
+	case MOV_AB:
+		c.mov_ab(i)
+		return nil
+	case IN_A:
+		c.in_a(i)
+		return nil
 	case MOV_A:
-		// TODO MOV_A function call
+		c.mov_a(i)
+		return nil
+	case MOV_BA:
+		c.mov_ba(i)
+		return nil
+	case ADD_B:
+		c.add_b(i)
+		return nil
+	case IN_B:
+		c.in_b(i)
 		return nil
 	case MOV_B:
-		// TODO ...
+		c.mov_b(i)
+		return nil
+	case OUT_B:
+		c.out_b(i)
+		return nil
+	case OUT:
+		c.out(i)
+		return nil
+	case JMP:
+		c.jmp(i)
+		return nil
+	case JNC:
+		c.jnc(i)
 		return nil
 	default:
 		return nil // TODO for motion check
