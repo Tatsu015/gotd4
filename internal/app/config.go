@@ -1,0 +1,4 @@
+package app
+
+const ROM_CAPACITY = 16
+const REGISTER_CAPACITY = ROM_CAPACITY

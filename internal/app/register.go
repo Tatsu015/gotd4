@@ -13,5 +13,10 @@ func (r *Register) value() int16 {
 }
 
 func (r *Register) setValue(v int16) {
-	r.v = v
+	if v > REGISTER_CAPACITY {
+		// when overflow set 0
+		r.v = 0
+	} else {
+		r.v = v
+	}
 }

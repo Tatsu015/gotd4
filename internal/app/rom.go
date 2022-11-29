@@ -1,13 +1,19 @@
 package app
 
 type ROM struct {
-	buf [16]byte
+	program []byte
 }
 
-func NewROM() ROM {
-	return ROM{}
+func NewROM(program []byte) ROM {
+	return ROM{
+		program: program,
+	}
+}
+
+func (r *ROM) MaxCapacityByte() int {
+	return ROM_CAPACITY
 }
 
 func (r *ROM) Fetch(a Adress) Instruction {
-	return Instruction(r.buf[a])
+	return Instruction(r.program[a])
 }
