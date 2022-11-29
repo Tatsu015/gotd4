@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 
 	"github.com/Tatsu015/gotd4.git/internal/app"
 	"github.com/spf13/cobra"
@@ -27,7 +28,14 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(runCmd)
-	cpu := app.NewCPU()
+	bytes, err := ioutil.ReadFile("./example/sample.bin")
+	if err != nil {
+		panic(err)
+	}
+	rom := app.NewROM(bytes)
+	in := app.NewIO()
+	out := app.NewIO()
+	cpu := app.NewCPU(rom, in, out)
 	cpu.Run()
 
 	// Here you will define your flags and configuration settings.

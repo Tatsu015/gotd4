@@ -33,16 +33,16 @@ type CPU struct {
 	out     IO
 }
 
-func NewCPU() CPU {
+func NewCPU(rom ROM, in IO, out IO) CPU {
 	return CPU{
 		a:       NewRegister(),
 		b:       NewRegister(),
 		carry:   NewRegister(),
 		pc:      NewRegister(),
 		decoder: NewDecoder(),
-		rom:     NewROM(),
-		in:      NewIO(),
-		out:     NewIO(),
+		rom:     rom,
+		in:      in,
+		out:     out,
 	}
 }
 
@@ -52,12 +52,13 @@ func (c *CPU) waitClockUp() {
 
 func (c *CPU) incrementPC() {
 	v := c.pc.value()
-	c.pc.setValue(v + 1) // TODO when overflow
+	c.pc.setValue(v + 1)
 }
 
 func (c *CPU) fetch(a Adress) Instruction {
-	fmt.Println("Fetch")
-	return c.rom.Fetch(a)
+	ins := c.rom.Fetch(a)
+	fmt.Printf("[Fetch] %v\n", ins)
+	return ins
 }
 
 func (c *CPU) decode(i Instruction) (Opecode, Immidiate) {
@@ -77,7 +78,8 @@ func (c *CPU) execute(o Opecode, i Immidiate) error {
 		// TODO ...
 		return nil
 	default:
-		return fmt.Errorf("Error opecode exist!")
+		return nil // TODO for motion check
+		// return fmt.Errorf("opecode %v not exist!", o)
 	}
 }
 
@@ -93,6 +95,7 @@ func (c *CPU) Run() {
 		// execute program
 		err := c.execute(ope, imm)
 		if err != nil {
+			fmt.Println(err)
 			return
 		}
 
