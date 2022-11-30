@@ -1,18 +1,18 @@
 package app
 
 type Register struct {
-	v int16
+	v Immidiate
 }
 
 func NewRegister() Register {
 	return Register{}
 }
 
-func (r *Register) value() int16 {
+func (r *Register) value() Immidiate {
 	return r.v
 }
 
-func (r *Register) setValue(v int16) {
+func (r *Register) setValue(v Immidiate) {
 	if v > REGISTER_CAPACITY {
 		// when overflow set 0
 		r.v = 0

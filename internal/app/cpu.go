@@ -46,18 +46,49 @@ func NewCPU(rom ROM, input IO, output IO) CPU {
 	}
 }
 
-func (c *CPU) add_a(i Immidiate)  { /*fmt.Println(i)*/ }
-func (c *CPU) mov_ab(i Immidiate) { /*fmt.Println(i)*/ }
-func (c *CPU) in_a(i Immidiate)   { /*fmt.Println(i)*/ }
-func (c *CPU) mov_a(i Immidiate)  { /*fmt.Println(i)*/ }
-func (c *CPU) mov_ba(i Immidiate) { /*fmt.Println(i)*/ }
-func (c *CPU) add_b(i Immidiate)  { /*fmt.Println(i)*/ }
-func (c *CPU) in_b(i Immidiate)   { /*fmt.Println(i)*/ }
-func (c *CPU) mov_b(i Immidiate)  { /*fmt.Println(i)*/ }
-func (c *CPU) out_b(i Immidiate)  { /*fmt.Println(i)*/ }
-func (c *CPU) out(i Immidiate)    { /*fmt.Println(i)*/ }
-func (c *CPU) jmp(i Immidiate)    { /*fmt.Println(i)*/ }
-func (c *CPU) jnc(i Immidiate)    { /*fmt.Println(i)*/ }
+func (c *CPU) add_a(i Immidiate) {
+	// oldVal := c.a.value()
+	// newVal := oldVal + i
+	// if newVal
+	// c.a.setValue(newVal)
+}
+
+func (c *CPU) mov_ab() {
+	im := c.b.value()
+	c.a.setValue(im)
+	c.carry.setValue(0)
+
+}
+
+func (c *CPU) in_a(i Immidiate) { /*fmt.Println(i)*/ }
+
+func (c *CPU) mov_a(i Immidiate) {
+	c.a.setValue(i)
+	c.carry.setValue(0)
+}
+
+func (c *CPU) mov_ba() {
+	im := c.a.value()
+	c.b.setValue(im)
+	c.carry.setValue(0)
+}
+
+func (c *CPU) add_b(i Immidiate) { /*fmt.Println(i)*/ }
+
+func (c *CPU) in_b(i Immidiate) { /*fmt.Println(i)*/ }
+
+func (c *CPU) mov_b(i Immidiate) {
+	c.b.setValue(i)
+	c.carry.setValue(0)
+}
+
+func (c *CPU) out_b(i Immidiate) { /*fmt.Println(i)*/ }
+
+func (c *CPU) out(i Immidiate) { /*fmt.Println(i)*/ }
+
+func (c *CPU) jmp(i Immidiate) { /*fmt.Println(i)*/ }
+
+func (c *CPU) jnc(i Immidiate) { /*fmt.Println(i)*/ }
 
 func (c *CPU) waitClockUp() {
 	time.Sleep(time.Millisecond * 100)
