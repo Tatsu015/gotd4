@@ -7,5 +7,8 @@ func NewDecoder() Decoder {
 }
 
 func (d *Decoder) Decode(i Instruction) (Opecode, Immidiate) {
-	return 1, 1 // TODO
+	imm := i & 0x0f
+	ope := (i & 0xf0) >> 4
+
+	return Opecode(ope), Immidiate(imm)
 }

@@ -46,18 +46,18 @@ func NewCPU(rom ROM, input IO, output IO) CPU {
 	}
 }
 
-func (c *CPU) add_a(i Immidiate)  { fmt.Println(i) }
-func (c *CPU) mov_ab(i Immidiate) { fmt.Println(i) }
-func (c *CPU) in_a(i Immidiate)   { fmt.Println(i) }
-func (c *CPU) mov_a(i Immidiate)  { fmt.Println(i) }
-func (c *CPU) mov_ba(i Immidiate) { fmt.Println(i) }
-func (c *CPU) add_b(i Immidiate)  { fmt.Println(i) }
-func (c *CPU) in_b(i Immidiate)   { fmt.Println(i) }
-func (c *CPU) mov_b(i Immidiate)  { fmt.Println(i) }
-func (c *CPU) out_b(i Immidiate)  { fmt.Println(i) }
-func (c *CPU) out(i Immidiate)    { fmt.Println(i) }
-func (c *CPU) jmp(i Immidiate)    { fmt.Println(i) }
-func (c *CPU) jnc(i Immidiate)    { fmt.Println(i) }
+func (c *CPU) add_a(i Immidiate)  { /*fmt.Println(i)*/ }
+func (c *CPU) mov_ab(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) in_a(i Immidiate)   { /*fmt.Println(i)*/ }
+func (c *CPU) mov_a(i Immidiate)  { /*fmt.Println(i)*/ }
+func (c *CPU) mov_ba(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) add_b(i Immidiate)  { /*fmt.Println(i)*/ }
+func (c *CPU) in_b(i Immidiate)   { /*fmt.Println(i)*/ }
+func (c *CPU) mov_b(i Immidiate)  { /*fmt.Println(i)*/ }
+func (c *CPU) out_b(i Immidiate)  { /*fmt.Println(i)*/ }
+func (c *CPU) out(i Immidiate)    { /*fmt.Println(i)*/ }
+func (c *CPU) jmp(i Immidiate)    { /*fmt.Println(i)*/ }
+func (c *CPU) jnc(i Immidiate)    { /*fmt.Println(i)*/ }
 
 func (c *CPU) waitClockUp() {
 	time.Sleep(time.Millisecond * 100)
@@ -75,14 +75,12 @@ func (c *CPU) fetch(a Adress) Instruction {
 }
 
 func (c *CPU) decode(i Instruction) (Opecode, Immidiate) {
-	fmt.Println("Decode")
-	return c.decoder.Decode(i)
+	ope, imm := c.decoder.Decode(i)
+	fmt.Printf("[Decode] Ins: %08b Ope: %04b Imm: %04b\n", i, ope, imm)
+	return ope, imm
 }
 
 func (c *CPU) execute(o Opecode, i Immidiate) error {
-	fmt.Println("Execute")
-
-	// TODO main processing
 	switch o {
 	case ADD_A:
 		c.add_a(i)
