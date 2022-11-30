@@ -1,4 +1,4 @@
 package app
 
-const ROM_CAPACITY = 16
+const ROM_CAPACITY = 0x0f
 const REGISTER_CAPACITY = ROM_CAPACITY

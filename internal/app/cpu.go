@@ -47,10 +47,17 @@ func NewCPU(rom ROM, input IO, output IO) CPU {
 }
 
 func (c *CPU) add_a(i Immidiate) {
-	// oldVal := c.a.value()
-	// newVal := oldVal + i
-	// if newVal
-	// c.a.setValue(newVal)
+	oldVal := c.a.value()
+	newVal := oldVal + i
+	if newVal > REGISTER_CAPACITY {
+		uncarried := 0x0f & newVal
+		c.a.setValue(uncarried)
+		c.carry.setValue(1)
+	} else {
+		c.a.setValue(newVal)
+		c.carry.setValue(0)
+	}
+	c.a.setValue(newVal)
 }
 
 func (c *CPU) mov_ab() {
@@ -60,7 +67,11 @@ func (c *CPU) mov_ab() {
 
 }
 
-func (c *CPU) in_a(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) in_a() {
+	i := c.input.value()
+	c.a.setValue(i)
+	c.carry.setValue(0)
+}
 
 func (c *CPU) mov_a(i Immidiate) {
 	c.a.setValue(i)
@@ -73,22 +84,53 @@ func (c *CPU) mov_ba() {
 	c.carry.setValue(0)
 }
 
-func (c *CPU) add_b(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) add_b(i Immidiate) {
+	oldVal := c.b.value()
+	newVal := oldVal + i
+	if newVal > REGISTER_CAPACITY {
+		uncarried := 0x0f & newVal
+		c.b.setValue(uncarried)
+		c.carry.setValue(1)
+	} else {
+		c.b.setValue(newVal)
+		c.carry.setValue(0)
+	}
+	c.b.setValue(newVal)
+}
 
-func (c *CPU) in_b(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) in_b() {
+	i := c.input.value()
+	c.b.setValue(i)
+	c.carry.setValue(0)
+}
 
 func (c *CPU) mov_b(i Immidiate) {
 	c.b.setValue(i)
 	c.carry.setValue(0)
 }
 
-func (c *CPU) out_b(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) out_b() {
+	i := c.b.value()
+	c.output.setValue(i)
+	c.carry.setValue(0)
+}
 
-func (c *CPU) out(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) out(i Immidiate) {
+	c.output.setValue(i)
+	c.carry.setValue(0)
+}
 
-func (c *CPU) jmp(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) jmp(i Immidiate) {
+	c.pc.setValue(i)
+	c.carry.setValue(0)
+}
 
-func (c *CPU) jnc(i Immidiate) { /*fmt.Println(i)*/ }
+func (c *CPU) jnc(i Immidiate) {
+	if c.carry.value() == 0 {
+		c.pc.setValue(i)
+	}
+	c.carry.setValue(0)
+}
 
 func (c *CPU) waitClockUp() {
 	time.Sleep(time.Millisecond * 100)
