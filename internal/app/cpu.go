@@ -159,28 +159,28 @@ func (c *CPU) execute(o Opecode, i Immidiate) error {
 		c.add_a(i)
 		return nil
 	case MOV_AB:
-		c.mov_ab(i)
+		c.mov_ab()
 		return nil
 	case IN_A:
-		c.in_a(i)
+		c.in_a()
 		return nil
 	case MOV_A:
 		c.mov_a(i)
 		return nil
 	case MOV_BA:
-		c.mov_ba(i)
+		c.mov_ba()
 		return nil
 	case ADD_B:
 		c.add_b(i)
 		return nil
 	case IN_B:
-		c.in_b(i)
+		c.in_b()
 		return nil
 	case MOV_B:
 		c.mov_b(i)
 		return nil
 	case OUT_B:
-		c.out_b(i)
+		c.out_b()
 		return nil
 	case OUT:
 		c.out(i)
@@ -192,8 +192,7 @@ func (c *CPU) execute(o Opecode, i Immidiate) error {
 		c.jnc(i)
 		return nil
 	default:
-		return nil // TODO for motion check
-		// return fmt.Errorf("opecode %v not exist!", o)
+		return fmt.Errorf("opecode %v not exist!", o)
 	}
 }
 
