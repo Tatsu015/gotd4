@@ -46,6 +46,11 @@ func NewCPU(rom ROM, input IO, output IO) CPU {
 	}
 }
 
+func (c *CPU) showOutput() {
+	v := c.output.value()
+	fmt.Printf("%04b\n", v)
+}
+
 func (c *CPU) add_a(i Immidiate) {
 	oldVal := c.a.value()
 	newVal := oldVal + i
@@ -143,13 +148,13 @@ func (c *CPU) incrementPC() {
 
 func (c *CPU) fetch(a Adress) Instruction {
 	ins := c.rom.Fetch(a)
-	fmt.Printf("[Fetch] %v\n", ins)
+	// fmt.Printf("[Fetch] %v\n", ins)
 	return ins
 }
 
 func (c *CPU) decode(i Instruction) (Opecode, Immidiate) {
 	ope, imm := c.decoder.Decode(i)
-	fmt.Printf("[Decode] Ins: %08b Ope: %04b Imm: %04b\n", i, ope, imm)
+	// fmt.Printf("[Decode] Ins: %08b Ope: %04b Imm: %04b\n", i, ope, imm)
 	return ope, imm
 }
 
@@ -213,6 +218,7 @@ func (c *CPU) Run() {
 		}
 
 		// wait and PC count up for next loop
+		c.showOutput()
 		c.waitClockUp()
 		c.incrementPC()
 	}
