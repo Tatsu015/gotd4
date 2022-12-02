@@ -1,7 +1,6 @@
 package emulator
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -10,20 +9,16 @@ type Emulator struct {
 	rom    *ROM
 	input  *Input
 	output *Output
+	clock  time.Duration
 }
 
-func NewEmulator(rom *ROM, input *Input, output *Output) Emulator {
+func NewEmulator(rom *ROM, input *Input, output *Output, clock time.Duration) Emulator {
 	cpu := NewCPU(rom, input, output)
-	return Emulator{cpu, rom, input, output}
-}
-
-func (e *Emulator) showOutput() {
-	v := e.output.value()
-	fmt.Printf("%04b\n", v)
+	return Emulator{cpu, rom, input, output, clock}
 }
 
 func (c *Emulator) waitClockUp() {
-	time.Sleep(time.Millisecond * 100)
+	time.Sleep(time.Millisecond * c.clock)
 }
 
 func (e *Emulator) Run() {
@@ -31,7 +26,7 @@ func (e *Emulator) Run() {
 		e.cpu.Progress()
 
 		// wait and PC count up for next loop
-		e.showOutput()
+		e.output.Show()
 		e.waitClockUp()
 	}
 }

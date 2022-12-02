@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"io/ioutil"
+	"time"
 
 	"github.com/Tatsu015/gotd4.git/internal/emulator"
 	"github.com/spf13/cobra"
@@ -21,16 +22,20 @@ var emulateCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
+		clock, _ := cmd.Flags().GetInt("clock")
+
 		rom := emulator.NewROM(bytes)
 		in := emulator.NewInput()
 		out := emulator.NewOutput()
-		e := emulator.NewEmulator(&rom, &in, &out)
+		e := emulator.NewEmulator(&rom, &in, &out, time.Duration(clock))
 		e.Run()
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(emulateCmd)
+
 	emulateCmd.Flags().StringP("file", "f", "", "Emurate TD4 CPU using specified 'file' program")
 	emulateCmd.MarkFlagRequired("file")
+	emulateCmd.Flags().IntP("clock", "c", 100, "Emurator clock ms")
 }
