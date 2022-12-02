@@ -17,17 +17,15 @@ var emulateCmd = &cobra.Command{
 	Long:  "Emurates TD4 CPU. A ROM file is required to run the emulator.",
 	Run: func(cmd *cobra.Command, args []string) {
 		f, _ := cmd.Flags().GetString("file")
-		if f != "" {
-			bytes, err := ioutil.ReadFile(f)
-			if err != nil {
-				panic(err)
-			}
-			rom := emulator.NewROM(bytes)
-			in := emulator.NewIO()
-			out := emulator.NewIO()
-			cpu := emulator.NewCPU(rom, in, out)
-			cpu.Run()
+		bytes, err := ioutil.ReadFile(f)
+		if err != nil {
+			panic(err)
 		}
+		rom := emulator.NewROM(bytes)
+		in := emulator.NewIO()
+		out := emulator.NewIO()
+		e := emulator.NewEmulator(rom, in, out)
+		e.Run()
 	},
 }
 

@@ -2,7 +2,6 @@ package emulator
 
 import (
 	"fmt"
-	"time"
 )
 
 type Opecode int16
@@ -44,11 +43,6 @@ func NewCPU(rom ROM, input IO, output IO) CPU {
 		input:   input,
 		output:  output,
 	}
-}
-
-func (c *CPU) showOutput() {
-	v := c.output.value()
-	fmt.Printf("%04b\n", v)
 }
 
 func (c *CPU) add_a(i Immidiate) {
@@ -137,27 +131,6 @@ func (c *CPU) jnc(i Immidiate) {
 	c.carry.setValue(0)
 }
 
-func (c *CPU) waitClockUp() {
-	time.Sleep(time.Millisecond * 100)
-}
-
-func (c *CPU) incrementPC() {
-	v := c.pc.value()
-	c.pc.setValue(v + 1)
-}
-
-func (c *CPU) fetch(a Adress) Instruction {
-	ins := c.rom.Fetch(a)
-	// fmt.Printf("[Fetch] %v\n", ins)
-	return ins
-}
-
-func (c *CPU) decode(i Instruction) (Opecode, Immidiate) {
-	ope, imm := c.decoder.Decode(i)
-	// fmt.Printf("[Decode] Ins: %08b Ope: %04b Imm: %04b\n", i, ope, imm)
-	return ope, imm
-}
-
 func (c *CPU) execute(o Opecode, i Immidiate) error {
 	switch o {
 	case ADD_A:
@@ -201,25 +174,29 @@ func (c *CPU) execute(o Opecode, i Immidiate) error {
 	}
 }
 
-func (c *CPU) Run() {
-	for {
-		// fetch program from ROM
-		ad := Adress(c.pc.value())
-		inst := c.fetch(ad)
+func (c *CPU) getPC() Adress {
+	return Adress(c.pc.value())
+}
 
-		// analyze fetch data
-		ope, imm := c.decode(inst)
+func (c *CPU) progressPC() {
+	v := c.pc.value()
+	c.pc.setValue(v + 1)
+}
 
-		// execute program
-		err := c.execute(ope, imm)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+func (c *CPU) Progress() {
+	// fetch program instruction
+	ad := c.getPC()
+	inst := c.rom.Fetch(ad)
 
-		// wait and PC count up for next loop
-		c.showOutput()
-		c.waitClockUp()
-		c.incrementPC()
+	// analyze fetch instruction
+	ope, imm := c.decoder.Decode(inst)
+
+	// execute opecode and immidiate
+	err := c.execute(ope, imm)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+
+	c.progressPC()
 }
