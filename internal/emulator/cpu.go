@@ -27,12 +27,12 @@ type CPU struct {
 	carry   Register
 	pc      Register
 	decoder Decoder
-	rom     ROM
-	input   IO
-	output  IO
+	rom     *ROM
+	input   *Input
+	output  *Output
 }
 
-func NewCPU(rom ROM, input IO, output IO) CPU {
+func NewCPU(rom *ROM, input *Input, output *Output) CPU {
 	return CPU{
 		a:       NewRegister(),
 		b:       NewRegister(),

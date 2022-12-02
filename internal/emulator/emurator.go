@@ -7,12 +7,12 @@ import (
 
 type Emulator struct {
 	cpu    CPU
-	rom    ROM
-	input  IO
-	output IO
+	rom    *ROM
+	input  *Input
+	output *Output
 }
 
-func NewEmulator(rom ROM, input IO, output IO) Emulator {
+func NewEmulator(rom *ROM, input *Input, output *Output) Emulator {
 	cpu := NewCPU(rom, input, output)
 	return Emulator{cpu, rom, input, output}
 }

@@ -22,9 +22,9 @@ var emulateCmd = &cobra.Command{
 			panic(err)
 		}
 		rom := emulator.NewROM(bytes)
-		in := emulator.NewIO()
-		out := emulator.NewIO()
-		e := emulator.NewEmulator(rom, in, out)
+		in := emulator.NewInput()
+		out := emulator.NewOutput()
+		e := emulator.NewEmulator(&rom, &in, &out)
 		e.Run()
 	},
 }
