@@ -6,7 +6,7 @@ package cmd
 import (
 	"io/ioutil"
 
-	"github.com/Tatsu015/gotd4.git/internal/app"
+	"github.com/Tatsu015/gotd4.git/internal/emulator"
 	"github.com/spf13/cobra"
 )
 
@@ -22,10 +22,10 @@ var emulateCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			rom := app.NewROM(bytes)
-			in := app.NewIO()
-			out := app.NewIO()
-			cpu := app.NewCPU(rom, in, out)
+			rom := emulator.NewROM(bytes)
+			in := emulator.NewIO()
+			out := emulator.NewIO()
+			cpu := emulator.NewCPU(rom, in, out)
 			cpu.Run()
 		}
 	},

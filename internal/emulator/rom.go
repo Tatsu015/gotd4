@@ -1,4 +1,4 @@
-package app
+package emulator
 
 type ROM struct {
 	program []byte

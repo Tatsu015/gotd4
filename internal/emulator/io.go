@@ -1,4 +1,4 @@
-package app
+package emulator
 
 type IO struct {
 	v Immidiate

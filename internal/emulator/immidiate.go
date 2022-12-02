@@ -1,3 +1,3 @@
-package app
+package emulator
 
 type Immidiate int
