@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -27,6 +28,7 @@ func NewCompiler(path string) Compiler {
 
 func (c *Compiler) Compile() []byte {
 	ts := Analyze(c.codes)
+	fmt.Println(ts)
 	n := Parse(ts)
 	ml := n.convert()
 	return ml

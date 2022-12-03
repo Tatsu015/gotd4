@@ -44,8 +44,8 @@ func IsOpe(s string) bool {
 
 func StrToOpe(s string) (Opecode, error) {
 	if ope, ok := codeMap()[s]; ok {
-		return 0, fmt.Errorf("Error: Not known opecode. %v", s)
-	} else {
 		return ope, nil
+	} else {
+		return 0, fmt.Errorf("Error: Not known opecode. %v", s)
 	}
 }
