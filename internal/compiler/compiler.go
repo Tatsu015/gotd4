@@ -26,7 +26,8 @@ func NewCompiler(path string) Compiler {
 }
 
 func (c *Compiler) Compile() []byte {
-	b := []byte{0x01}
 	ts := Analyze(c.codes)
-	return b
+	n := Parse(ts)
+	ml := n.convert()
+	return ml
 }
