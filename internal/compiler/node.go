@@ -13,7 +13,7 @@ func (n *Node) add(c Node) {
 	n.children = append(n.children, c)
 }
 
-func (n *Node) convert() []byte {
+func (n *Node) toBinary() []byte {
 	ml := []byte{}
 	return ml
 }

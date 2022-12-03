@@ -30,6 +30,6 @@ func (c *Compiler) Compile() []byte {
 	ts := Analyze(c.codes)
 	ast := Parse(ts)
 	fmt.Println(ast)
-	ml := ast.convert()
-	return ml
+	b := ast.toBinary()
+	return b
 }
