@@ -1,5 +1,7 @@
 package types
 
+import "fmt"
+
 type Opecode int16
 
 const (
@@ -16,3 +18,34 @@ const (
 	JMP    Opecode = 0x0e
 	JNC    Opecode = 0x0f
 )
+
+func codeMap() map[string]Opecode {
+	CODE_MAP := map[string]Opecode{
+		"ADD A":   ADD_A,
+		"MOV A,B": MOV_AB,
+		"IN A":    IN_A,
+		"MOV A":   MOV_A,
+		"MOV B,A": MOV_BA,
+		"ADD B":   ADD_B,
+		"IN B":    IN_B,
+		"MOV B":   MOV_B,
+		"OUT B":   OUT_B,
+		"OUT":     OUT,
+		"JMP":     JMP,
+		"JNC":     JNC,
+	}
+	return CODE_MAP
+}
+
+func IsOpe(s string) bool {
+	_, ok := codeMap()[s]
+	return ok
+}
+
+func StrToOpe(s string) (Opecode, error) {
+	if ope, ok := codeMap()[s]; ok {
+		return 0, fmt.Errorf("Error: Not known opecode. %v", s)
+	} else {
+		return ope, nil
+	}
+}
