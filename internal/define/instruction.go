@@ -1,3 +1,3 @@
-package emulator
+package define
 
 type Instruction byte

@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/Tatsu015/gotd4.git/internal/emulator"
+	"github.com/Tatsu015/gotd4.git/internal/emulator/io"
+	"github.com/Tatsu015/gotd4.git/internal/emulator/rom"
 	"github.com/spf13/cobra"
 )
 
@@ -24,9 +26,9 @@ var emulateCmd = &cobra.Command{
 		}
 		clock, _ := cmd.Flags().GetInt("clock")
 
-		rom := emulator.NewROM(bytes)
-		in := emulator.NewInput()
-		out := emulator.NewOutput()
+		rom := rom.NewROM(bytes)
+		in := io.NewInput()
+		out := io.NewOutput()
 		e := emulator.NewEmulator(&rom, &in, &out, time.Duration(clock))
 		e.Run()
 	},

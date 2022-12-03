@@ -1,7 +1,11 @@
-package emulator
+package cpu
 
 import (
 	"fmt"
+
+	"github.com/Tatsu015/gotd4.git/internal/define"
+	"github.com/Tatsu015/gotd4.git/internal/emulator/io"
+	"github.com/Tatsu015/gotd4.git/internal/emulator/rom"
 )
 
 type Opecode int16
@@ -27,12 +31,12 @@ type CPU struct {
 	carry   Register
 	pc      Register
 	decoder Decoder
-	rom     *ROM
-	input   *Input
-	output  *Output
+	rom     *rom.ROM
+	input   *io.Input
+	output  *io.Output
 }
 
-func NewCPU(rom *ROM, input *Input, output *Output) CPU {
+func NewCPU(rom *rom.ROM, input *io.Input, output *io.Output) CPU {
 	return CPU{
 		a:       NewRegister(),
 		b:       NewRegister(),
@@ -45,10 +49,10 @@ func NewCPU(rom *ROM, input *Input, output *Output) CPU {
 	}
 }
 
-func (c *CPU) add_a(i Immidiate) {
+func (c *CPU) add_a(i define.Immidiate) {
 	oldVal := c.a.value()
 	newVal := oldVal + i
-	if newVal > REGISTER_CAPACITY {
+	if newVal > define.REGISTER_CAPACITY {
 		uncarried := 0x0f & newVal
 		c.a.setValue(uncarried)
 		c.carry.setValue(1)
@@ -67,12 +71,12 @@ func (c *CPU) mov_ab() {
 }
 
 func (c *CPU) in_a() {
-	i := c.input.value()
+	i := c.input.Value()
 	c.a.setValue(i)
 	c.carry.setValue(0)
 }
 
-func (c *CPU) mov_a(i Immidiate) {
+func (c *CPU) mov_a(i define.Immidiate) {
 	c.a.setValue(i)
 	c.carry.setValue(0)
 }
@@ -83,10 +87,10 @@ func (c *CPU) mov_ba() {
 	c.carry.setValue(0)
 }
 
-func (c *CPU) add_b(i Immidiate) {
+func (c *CPU) add_b(i define.Immidiate) {
 	oldVal := c.b.value()
 	newVal := oldVal + i
-	if newVal > REGISTER_CAPACITY {
+	if newVal > define.REGISTER_CAPACITY {
 		uncarried := 0x0f & newVal
 		c.b.setValue(uncarried)
 		c.carry.setValue(1)
@@ -98,40 +102,40 @@ func (c *CPU) add_b(i Immidiate) {
 }
 
 func (c *CPU) in_b() {
-	i := c.input.value()
+	i := c.input.Value()
 	c.b.setValue(i)
 	c.carry.setValue(0)
 }
 
-func (c *CPU) mov_b(i Immidiate) {
+func (c *CPU) mov_b(i define.Immidiate) {
 	c.b.setValue(i)
 	c.carry.setValue(0)
 }
 
 func (c *CPU) out_b() {
 	i := c.b.value()
-	c.output.setValue(i)
+	c.output.SetValue(int(i))
 	c.carry.setValue(0)
 }
 
-func (c *CPU) out(i Immidiate) {
-	c.output.setValue(i)
+func (c *CPU) out(i define.Immidiate) {
+	c.output.SetValue(int(i))
 	c.carry.setValue(0)
 }
 
-func (c *CPU) jmp(i Immidiate) {
+func (c *CPU) jmp(i define.Immidiate) {
 	c.pc.setValue(i)
 	c.carry.setValue(0)
 }
 
-func (c *CPU) jnc(i Immidiate) {
+func (c *CPU) jnc(i define.Immidiate) {
 	if c.carry.value() == 0 {
 		c.pc.setValue(i)
 	}
 	c.carry.setValue(0)
 }
 
-func (c *CPU) execute(o Opecode, i Immidiate) error {
+func (c *CPU) execute(o Opecode, i define.Immidiate) error {
 	switch o {
 	case ADD_A:
 		c.add_a(i)
@@ -174,8 +178,8 @@ func (c *CPU) execute(o Opecode, i Immidiate) error {
 	}
 }
 
-func (c *CPU) getPC() Adress {
-	return Adress(c.pc.value())
+func (c *CPU) getPC() define.Adress {
+	return define.Adress(c.pc.value())
 }
 
 func (c *CPU) progressPC() {

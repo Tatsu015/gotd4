@@ -2,18 +2,22 @@ package emulator
 
 import (
 	"time"
+
+	"github.com/Tatsu015/gotd4.git/internal/emulator/cpu"
+	"github.com/Tatsu015/gotd4.git/internal/emulator/io"
+	"github.com/Tatsu015/gotd4.git/internal/emulator/rom"
 )
 
 type Emulator struct {
-	cpu    CPU
-	rom    *ROM
-	input  *Input
-	output *Output
+	cpu    cpu.CPU
+	rom    *rom.ROM
+	input  *io.Input
+	output *io.Output
 	clock  time.Duration
 }
 
-func NewEmulator(rom *ROM, input *Input, output *Output, clock time.Duration) Emulator {
-	cpu := NewCPU(rom, input, output)
+func NewEmulator(rom *rom.ROM, input *io.Input, output *io.Output, clock time.Duration) Emulator {
+	cpu := cpu.NewCPU(rom, input, output)
 	return Emulator{cpu, rom, input, output, clock}
 }
 
