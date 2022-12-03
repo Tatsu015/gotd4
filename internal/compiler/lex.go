@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+
+	"github.com/Tatsu015/gotd4.git/internal/define"
 )
 
 func simplfy(s string) string {
@@ -12,26 +14,41 @@ func simplfy(s string) string {
 	return string(t)
 }
 
+func divide(line string) (opecode string, immidiate string, err error) {
+	l := strings.TrimSpace(line)
+	if strings.Contains(l, ",") {
+		ss := strings.Split(l, ",")
+		opecode = simplfy(ss[0])
+		immidiate = simplfy(ss[1])
+		return opecode, immidiate, nil
+	}
+	if strings.Contains(l, " ") {
+		ss := strings.Split(l, " ")
+		opecode = simplfy(ss[0])
+		immidiate = simplfy(ss[1])
+		return opecode, immidiate, nil
+	}
+	return "", "", fmt.Errorf("Error: failed to divide opecode and immidiate.")
+}
+
 func Analyze(codes []string) []Token {
 	tokens := []Token{}
-	for i, code := range codes {
-		ss := strings.Split(code, ",")
-		// opecode divided by ','
-		if len(ss) == 2 {
-			ope := simplfy(ss[0])
-			tokens = append(tokens, t0)
-			imm := simplfy(ss[1])
-			continue
+	for i, line := range codes {
+		// line has 2 pattern, contain ',' or not.
+		// for ex.
+		//  ADD A, 0011 <- contain ','
+		//  IN A <- not contain ','
+		// if contain ',', Opecode is before ',' and Immidiate is after ','.
+		// if not contain ',', Opecode is before ' ' and Immidiate is after ' '.
+		ope, imm, err := divide(line)
+		if err != nil {
+			err := fmt.Sprintf("Error: syntax error at l:%d %s", i, line)
+			panic(err)
 		}
-		ss = strings.Split(code, " ")
-		if len(ss) == 2 {
-			ope := simplfy(ss[0])
-			tokens = append(tokens, t0)
-			imm := simplfy(ss[1])
-			continue
-		}
-		err := fmt.Sprintf("Error: syntax error at l:%d %s", i, code)
-		panic(err)
+
+		i, err := define.StrtoImm(imm)
+		fmt.Println(ope, "-", i)
+
 	}
-	return []Token{}
+	return tokens
 }

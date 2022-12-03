@@ -12,4 +12,6 @@ type Token struct {
 	val  int
 }
 
-func 
+func NewToken(kind Kind, val int) Token {
+	return Token{kind, val}
+}
