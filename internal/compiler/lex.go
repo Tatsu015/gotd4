@@ -14,24 +14,24 @@ func simplfy(s string) string {
 	return string(t)
 }
 
-func divide(line string) (opecode string, immidiate string, hasImm bool, err error) {
+func divide(line string) (opecode string, immidiate string, err error) {
 	l := strings.TrimSpace(line)
 	if types.IsOpe(l) {
-		return l, "", false, nil
+		return l, "0000", nil
 	}
 	if strings.Contains(l, ",") {
 		ss := strings.Split(l, ",")
 		opecode = simplfy(ss[0])
 		immidiate = simplfy(ss[1])
-		return opecode, immidiate, true, nil
+		return opecode, immidiate, nil
 	}
 	if strings.Contains(l, " ") {
 		ss := strings.Split(l, " ")
 		opecode = simplfy(ss[0])
 		immidiate = simplfy(ss[1])
-		return opecode, immidiate, true, nil
+		return opecode, immidiate, nil
 	}
-	return "", "", false, fmt.Errorf("Error: failed to divide opecode and immidiate.")
+	return "", "", fmt.Errorf("Error: failed to divide opecode and immidiate.")
 }
 
 func Analyze(codes []string) []Token {
@@ -39,12 +39,12 @@ func Analyze(codes []string) []Token {
 	for i, line := range codes {
 		// line has 3 pattern, contain ',' or not.
 		// for ex.
-		// 1. MOV A,B <- no immidiate
+		// 1. MOV A,B <- opecode only (immidiate become 0000)
 		// 2. ADD A, 0011 <- contain ','
 		// 3. IN A <- not contain ','
 		// if contain ',', Opecode is before ',' and Immidiate is after ','.
 		// if not contain ',', Opecode is before ' ' and Immidiate is after ' '.
-		ope, imm, hasImm, err := divide(line)
+		ope, imm, err := divide(line)
 		if err != nil {
 			e := fmt.Sprintf("Error: syntax error at l:%d %s", i, line)
 			panic(e)
@@ -56,11 +56,6 @@ func Analyze(codes []string) []Token {
 			panic(e)
 		}
 		tokens = append(tokens, NewToken(Ope, int(o)))
-
-		// exist opecode only
-		if hasImm == false {
-			continue
-		}
 
 		i, err := types.StrtoImm(imm)
 		if err != nil {
