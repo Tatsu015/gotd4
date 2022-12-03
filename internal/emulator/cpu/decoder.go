@@ -8,9 +8,9 @@ func NewDecoder() Decoder {
 	return Decoder{}
 }
 
-func (d *Decoder) Decode(i types.Instruction) (Opecode, types.Immidiate) {
+func (d *Decoder) Decode(i types.Instruction) (types.Opecode, types.Immidiate) {
 	imm := i & 0x0f
 	ope := (i & 0xf0) >> 4
 
-	return Opecode(ope), types.Immidiate(imm)
+	return types.Opecode(ope), types.Immidiate(imm)
 }

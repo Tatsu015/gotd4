@@ -8,23 +8,6 @@ import (
 	"github.com/Tatsu015/gotd4.git/internal/types"
 )
 
-type Opecode int16
-
-const (
-	ADD_A  Opecode = 0x00
-	MOV_AB Opecode = 0x01
-	IN_A   Opecode = 0x02
-	MOV_A  Opecode = 0x03
-	MOV_BA Opecode = 0x04
-	ADD_B  Opecode = 0x05
-	IN_B   Opecode = 0x06
-	MOV_B  Opecode = 0x07
-	OUT_B  Opecode = 0x09
-	OUT    Opecode = 0x0b
-	JMP    Opecode = 0x0e
-	JNC    Opecode = 0x0f
-)
-
 type CPU struct {
 	a       Register
 	b       Register
@@ -135,42 +118,42 @@ func (c *CPU) jnc(i types.Immidiate) {
 	c.carry.setValue(0)
 }
 
-func (c *CPU) execute(o Opecode, i types.Immidiate) error {
+func (c *CPU) execute(o types.Opecode, i types.Immidiate) error {
 	switch o {
-	case ADD_A:
+	case types.ADD_A:
 		c.add_a(i)
 		return nil
-	case MOV_AB:
+	case types.MOV_AB:
 		c.mov_ab()
 		return nil
-	case IN_A:
+	case types.IN_A:
 		c.in_a()
 		return nil
-	case MOV_A:
+	case types.MOV_A:
 		c.mov_a(i)
 		return nil
-	case MOV_BA:
+	case types.MOV_BA:
 		c.mov_ba()
 		return nil
-	case ADD_B:
+	case types.ADD_B:
 		c.add_b(i)
 		return nil
-	case IN_B:
+	case types.IN_B:
 		c.in_b()
 		return nil
-	case MOV_B:
+	case types.MOV_B:
 		c.mov_b(i)
 		return nil
-	case OUT_B:
+	case types.OUT_B:
 		c.out_b()
 		return nil
-	case OUT:
+	case types.OUT:
 		c.out(i)
 		return nil
-	case JMP:
+	case types.JMP:
 		c.jmp(i)
 		return nil
-	case JNC:
+	case types.JNC:
 		c.jnc(i)
 		return nil
 	default:

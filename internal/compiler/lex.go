@@ -42,11 +42,15 @@ func Analyze(codes []string) []Token {
 		// if not contain ',', Opecode is before ' ' and Immidiate is after ' '.
 		ope, imm, err := divide(line)
 		if err != nil {
-			err := fmt.Sprintf("Error: syntax error at l:%d %s", i, line)
-			panic(err)
+			e := fmt.Sprintf("Error: syntax error at l:%d %s", i, line)
+			panic(e)
 		}
 
 		i, err := types.StrtoImm(imm)
+		if err != nil {
+			e := fmt.Sprintf("Error: syntax error at l:%d %s", i, line)
+			panic(e)
+		}
 		fmt.Println(ope, "-", i)
 
 	}
