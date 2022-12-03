@@ -28,8 +28,8 @@ func NewCompiler(path string) Compiler {
 
 func (c *Compiler) Compile() []byte {
 	ts := Analyze(c.codes)
-	fmt.Println(ts)
-	n := Parse(ts)
-	ml := n.convert()
+	ast := Parse(ts)
+	fmt.Println(ast)
+	ml := ast.convert()
 	return ml
 }

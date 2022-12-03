@@ -1,6 +1,9 @@
 package compiler
 
-func Parse(ts []Token) Node {
+func Parse(tokens []Token) Node {
 	root := NewNode(0)
+	for _, t := range tokens {
+		root.add(NewNode(t.val))
+	}
 	return root
 }
