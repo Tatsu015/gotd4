@@ -1,19 +1,19 @@
 package io
 
-import "github.com/Tatsu015/gotd4.git/internal/define"
+import "github.com/Tatsu015/gotd4.git/internal/types"
 
 type Input struct {
-	v define.Immidiate
+	v types.Immidiate
 }
 
 func NewInput() Input {
 	return Input{}
 }
 
-func (i *Input) Value() define.Immidiate {
+func (i *Input) Value() types.Immidiate {
 	return i.v
 }
 
-func (i *Input) SetValue(v define.Immidiate) {
-	i.v = v & define.REGISTER_CAPACITY
+func (i *Input) SetValue(v types.Immidiate) {
+	i.v = v & types.REGISTER_CAPACITY
 }

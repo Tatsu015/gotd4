@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Tatsu015/gotd4.git/internal/define"
+	"github.com/Tatsu015/gotd4.git/internal/types"
 )
 
 func simplfy(s string) string {
@@ -46,7 +46,7 @@ func Analyze(codes []string) []Token {
 			panic(err)
 		}
 
-		i, err := define.StrtoImm(imm)
+		i, err := types.StrtoImm(imm)
 		fmt.Println(ope, "-", i)
 
 	}

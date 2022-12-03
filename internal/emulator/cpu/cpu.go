@@ -3,9 +3,9 @@ package cpu
 import (
 	"fmt"
 
-	"github.com/Tatsu015/gotd4.git/internal/define"
 	"github.com/Tatsu015/gotd4.git/internal/emulator/io"
 	"github.com/Tatsu015/gotd4.git/internal/emulator/rom"
+	"github.com/Tatsu015/gotd4.git/internal/types"
 )
 
 type Opecode int16
@@ -49,10 +49,10 @@ func NewCPU(rom *rom.ROM, input *io.Input, output *io.Output) CPU {
 	}
 }
 
-func (c *CPU) add_a(i define.Immidiate) {
+func (c *CPU) add_a(i types.Immidiate) {
 	oldVal := c.a.value()
 	newVal := oldVal + i
-	if newVal > define.REGISTER_CAPACITY {
+	if newVal > types.REGISTER_CAPACITY {
 		uncarried := 0x0f & newVal
 		c.a.setValue(uncarried)
 		c.carry.setValue(1)
@@ -76,7 +76,7 @@ func (c *CPU) in_a() {
 	c.carry.setValue(0)
 }
 
-func (c *CPU) mov_a(i define.Immidiate) {
+func (c *CPU) mov_a(i types.Immidiate) {
 	c.a.setValue(i)
 	c.carry.setValue(0)
 }
@@ -87,10 +87,10 @@ func (c *CPU) mov_ba() {
 	c.carry.setValue(0)
 }
 
-func (c *CPU) add_b(i define.Immidiate) {
+func (c *CPU) add_b(i types.Immidiate) {
 	oldVal := c.b.value()
 	newVal := oldVal + i
-	if newVal > define.REGISTER_CAPACITY {
+	if newVal > types.REGISTER_CAPACITY {
 		uncarried := 0x0f & newVal
 		c.b.setValue(uncarried)
 		c.carry.setValue(1)
@@ -107,7 +107,7 @@ func (c *CPU) in_b() {
 	c.carry.setValue(0)
 }
 
-func (c *CPU) mov_b(i define.Immidiate) {
+func (c *CPU) mov_b(i types.Immidiate) {
 	c.b.setValue(i)
 	c.carry.setValue(0)
 }
@@ -118,24 +118,24 @@ func (c *CPU) out_b() {
 	c.carry.setValue(0)
 }
 
-func (c *CPU) out(i define.Immidiate) {
+func (c *CPU) out(i types.Immidiate) {
 	c.output.SetValue(int(i))
 	c.carry.setValue(0)
 }
 
-func (c *CPU) jmp(i define.Immidiate) {
+func (c *CPU) jmp(i types.Immidiate) {
 	c.pc.setValue(i)
 	c.carry.setValue(0)
 }
 
-func (c *CPU) jnc(i define.Immidiate) {
+func (c *CPU) jnc(i types.Immidiate) {
 	if c.carry.value() == 0 {
 		c.pc.setValue(i)
 	}
 	c.carry.setValue(0)
 }
 
-func (c *CPU) execute(o Opecode, i define.Immidiate) error {
+func (c *CPU) execute(o Opecode, i types.Immidiate) error {
 	switch o {
 	case ADD_A:
 		c.add_a(i)
@@ -178,8 +178,8 @@ func (c *CPU) execute(o Opecode, i define.Immidiate) error {
 	}
 }
 
-func (c *CPU) getPC() define.Adress {
-	return define.Adress(c.pc.value())
+func (c *CPU) getPC() types.Adress {
+	return types.Adress(c.pc.value())
 }
 
 func (c *CPU) progressPC() {

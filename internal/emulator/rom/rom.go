@@ -1,6 +1,6 @@
 package rom
 
-import "github.com/Tatsu015/gotd4.git/internal/define"
+import "github.com/Tatsu015/gotd4.git/internal/types"
 
 type ROM struct {
 	program []byte
@@ -13,9 +13,9 @@ func NewROM(program []byte) ROM {
 }
 
 func (r *ROM) MaxCapacityByte() int {
-	return define.REGISTER_CAPACITY
+	return types.REGISTER_CAPACITY
 }
 
-func (r *ROM) Fetch(a define.Adress) define.Instruction {
-	return define.Instruction(r.program[a])
+func (r *ROM) Fetch(a types.Adress) types.Instruction {
+	return types.Instruction(r.program[a])
 }

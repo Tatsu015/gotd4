@@ -1,3 +1,3 @@
-package define
+package types
 
 type Adress int16

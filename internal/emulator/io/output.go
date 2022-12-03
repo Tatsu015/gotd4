@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/Tatsu015/gotd4.git/internal/define"
+	"github.com/Tatsu015/gotd4.git/internal/types"
 )
 
 type Output struct {
@@ -38,5 +38,5 @@ func (o *Output) Value() int {
 }
 
 func (o *Output) SetValue(v int) {
-	o.v = v & define.REGISTER_CAPACITY
+	o.v = v & types.REGISTER_CAPACITY
 }

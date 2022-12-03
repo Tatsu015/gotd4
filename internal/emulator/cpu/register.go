@@ -1,19 +1,19 @@
 package cpu
 
-import "github.com/Tatsu015/gotd4.git/internal/define"
+import "github.com/Tatsu015/gotd4.git/internal/types"
 
 type Register struct {
-	v define.Immidiate
+	v types.Immidiate
 }
 
 func NewRegister() Register {
 	return Register{}
 }
 
-func (r *Register) value() define.Immidiate {
+func (r *Register) value() types.Immidiate {
 	return r.v
 }
 
-func (r *Register) setValue(v define.Immidiate) {
-	r.v = v & define.REGISTER_CAPACITY
+func (r *Register) setValue(v types.Immidiate) {
+	r.v = v & types.REGISTER_CAPACITY
 }
