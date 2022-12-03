@@ -4,7 +4,6 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strings"
 
@@ -23,7 +22,6 @@ var buildCmd = &cobra.Command{
 		b := c.Compile()
 
 		newpath := f[:strings.LastIndex(f, ".")]
-		fmt.Println(b, "-", newpath)
 		err := ioutil.WriteFile(newpath, b, 0755)
 		if err != nil {
 			panic(err)

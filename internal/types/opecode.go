@@ -15,8 +15,8 @@ const (
 	MOV_B  Opecode = 0x07
 	OUT_B  Opecode = 0x09
 	OUT    Opecode = 0x0b
-	JMP    Opecode = 0x0e
-	JNC    Opecode = 0x0f
+	JNC    Opecode = 0x0c
+	JMP    Opecode = 0x0f
 )
 
 func codeMap() map[string]Opecode {
