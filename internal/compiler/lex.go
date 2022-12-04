@@ -9,7 +9,8 @@ import (
 )
 
 func simplfy(s string) string {
-	re := regexp.MustCompile("[\\s\n\r]")
+	s = strings.TrimSpace(s)
+	re := regexp.MustCompile("[\n\r]")
 	t := re.ReplaceAll([]byte(s), []byte{})
 	return string(t)
 }
