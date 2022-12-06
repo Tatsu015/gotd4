@@ -23,14 +23,26 @@ func (o *Output) replace01(org string, zero string, one string) string {
 	return t2
 }
 
-func (o *Output) Show() {
+func (o *Output) InitDisplay() {
+	o.reset()
+	o.firstShow()
+}
+
+func (o *Output) reset() {
 	cmd := exec.Command("clear")
 	cmd.Stdout = os.Stdout
 	cmd.Run()
+}
 
-	bitStr := fmt.Sprintf("%04b\n", o.v)
+func (o *Output) firstShow() {
+	fmt.Println("□□□□")
+}
+
+func (o *Output) Show() {
+	o.reset()
+	bitStr := fmt.Sprintf("%04b", o.v)
 	disp := o.replace01(bitStr, "□", "■")
-	fmt.Print(disp)
+	fmt.Println(disp)
 }
 
 func (o *Output) Value() int {
