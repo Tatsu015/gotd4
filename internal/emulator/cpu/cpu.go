@@ -46,11 +46,8 @@ func (c *CPU) add_a(i types.Immidiate) {
 	oldVal := c.a.value()
 	newVal := oldVal + i
 	if newVal > types.REGISTER_CAPACITY {
-		uncarried := 0x0f & newVal
-		c.a.setValue(uncarried)
 		c.carry.setValue(1)
 	} else {
-		c.a.setValue(newVal)
 		c.carry.setValue(0)
 	}
 	c.a.setValue(newVal)
@@ -84,11 +81,8 @@ func (c *CPU) add_b(i types.Immidiate) {
 	oldVal := c.b.value()
 	newVal := oldVal + i
 	if newVal > types.REGISTER_CAPACITY {
-		uncarried := 0x0f & newVal
-		c.b.setValue(uncarried)
 		c.carry.setValue(1)
 	} else {
-		c.b.setValue(newVal)
 		c.carry.setValue(0)
 	}
 	c.b.setValue(newVal)
