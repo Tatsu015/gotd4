@@ -187,7 +187,6 @@ func (c *CPU) Progress() {
 
 	// analyze fetch instruction
 	c.currentOpe, c.currentImm = c.decoder.Decode(inst)
-	fmt.Println(c.currentOpe, c.currentImm)
 
 	// execute opecode and immidiate
 	err := c.execute(c.currentOpe, c.currentImm)
