@@ -1,6 +1,8 @@
 package emulator
 
 import (
+	"os"
+	"os/exec"
 	"time"
 
 	"github.com/Tatsu015/gotd4.git/internal/emulator/cpu"
@@ -34,6 +36,11 @@ func (c *Emulator) waitClockUp() {
 }
 
 func (e *Emulator) Run() {
+	// clear console display first
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+
 	for {
 		e.cpu.Progress()
 		if e.debugger != nil {
