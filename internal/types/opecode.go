@@ -49,3 +49,12 @@ func StrToOpe(s string) (Opecode, error) {
 		return 0, fmt.Errorf("Error: Not known opecode. %v", s)
 	}
 }
+
+func OpeToStr(o Opecode) (string, error) {
+	for k, v := range codeMap() {
+		if v == o {
+			return k, nil
+		}
+	}
+	return "", fmt.Errorf("Error: Not exist opecode string. %v", o)
+}

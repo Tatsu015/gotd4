@@ -9,26 +9,36 @@ import (
 )
 
 type CPU struct {
-	a       Register
-	b       Register
-	carry   Register
-	pc      Register
-	decoder Decoder
-	rom     *rom.ROM
-	input   *io.Input
-	output  *io.Output
+	a          Register
+	b          Register
+	carry      Register
+	pc         Register
+	decoder    Decoder
+	rom        *rom.ROM
+	input      *io.Input
+	output     *io.Output
+	currentOpe types.Opecode   // for debug display
+	currentImm types.Immidiate // for debug display
+}
+
+func (c *CPU) Show() {
+	ostr, _ := types.OpeToStr(c.currentOpe)
+	fmt.Printf("a:%04b b:%04b pc:%04b carry:%04b in:%04b out:%04b ope:%v(%04b) imm:%04b\n",
+		c.a.value(), c.b.value(), c.pc.value(), c.carry.value(), c.input.Value(), c.output.Value(), ostr, c.currentOpe, c.currentImm)
 }
 
 func NewCPU(rom *rom.ROM, input *io.Input, output *io.Output) CPU {
 	return CPU{
-		a:       NewRegister(),
-		b:       NewRegister(),
-		carry:   NewRegister(),
-		pc:      NewRegister(),
-		decoder: NewDecoder(),
-		rom:     rom,
-		input:   input,
-		output:  output,
+		a:          NewRegister(),
+		b:          NewRegister(),
+		carry:      NewRegister(),
+		pc:         NewRegister(),
+		decoder:    NewDecoder(),
+		rom:        rom,
+		input:      input,
+		output:     output,
+		currentOpe: 0,
+		currentImm: 0,
 	}
 }
 
@@ -176,10 +186,11 @@ func (c *CPU) Progress() {
 	inst := c.rom.Fetch(ad)
 
 	// analyze fetch instruction
-	ope, imm := c.decoder.Decode(inst)
+	c.currentOpe, c.currentImm = c.decoder.Decode(inst)
+	fmt.Println(c.currentOpe, c.currentImm)
 
 	// execute opecode and immidiate
-	err := c.execute(ope, imm)
+	err := c.execute(c.currentOpe, c.currentImm)
 	if err != nil {
 		fmt.Println(err)
 		return

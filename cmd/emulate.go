@@ -25,11 +25,12 @@ var emulateCmd = &cobra.Command{
 			panic(err)
 		}
 		clock, _ := cmd.Flags().GetInt("clock")
+		debug, _ := cmd.Flags().GetBool("debug")
 
 		rom := rom.NewROM(bytes)
 		in := io.NewInput()
 		out := io.NewOutput()
-		e := emulator.NewEmulator(&rom, &in, &out, time.Duration(clock))
+		e := emulator.NewEmulator(&rom, &in, &out, time.Duration(clock), debug)
 		e.Run()
 	},
 }
@@ -40,4 +41,5 @@ func init() {
 	emulateCmd.Flags().StringP("file", "f", "", "Emurate TD4 CPU using specified 'file' program")
 	emulateCmd.MarkFlagRequired("file")
 	emulateCmd.Flags().IntP("clock", "c", 100, "Emurator clock ms")
+	emulateCmd.Flags().BoolP("debug", "d", false, "Emurate TD4 CPU with debugging")
 }
