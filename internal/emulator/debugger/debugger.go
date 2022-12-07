@@ -17,9 +17,12 @@ func NewDebugger(cpu *cpu.CPU) Debugger {
 	}
 }
 
-func (d *Debugger) Break() {
-	fmt.Println("-----------------------------------------------------")
+func (d *Debugger) PrintCPUStatus() {
+	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
 	d.cpu.Show()
+}
+
+func (d *Debugger) Break() {
 	fmt.Println("c + Enter: Go to next line")
 	fmt.Scan(&d.currentCmd)
 }
