@@ -51,30 +51,34 @@ func (c *CPU) add_a(i types.Immidiate) {
 		c.carry.setValue(0)
 	}
 	c.a.setValue(newVal)
+	c.progressPC()
 }
 
 func (c *CPU) mov_ab() {
 	im := c.b.value()
 	c.a.setValue(im)
 	c.carry.setValue(0)
-
+	c.progressPC()
 }
 
 func (c *CPU) in_a() {
 	i := c.input.Value()
 	c.a.setValue(i)
 	c.carry.setValue(0)
+	c.progressPC()
 }
 
 func (c *CPU) mov_a(i types.Immidiate) {
 	c.a.setValue(i)
 	c.carry.setValue(0)
+	c.progressPC()
 }
 
 func (c *CPU) mov_ba() {
 	im := c.a.value()
 	c.b.setValue(im)
 	c.carry.setValue(0)
+	c.progressPC()
 }
 
 func (c *CPU) add_b(i types.Immidiate) {
@@ -86,83 +90,84 @@ func (c *CPU) add_b(i types.Immidiate) {
 		c.carry.setValue(0)
 	}
 	c.b.setValue(newVal)
+	c.progressPC()
 }
 
 func (c *CPU) in_b() {
 	i := c.input.Value()
 	c.b.setValue(i)
 	c.carry.setValue(0)
+	c.progressPC()
 }
 
 func (c *CPU) mov_b(i types.Immidiate) {
 	c.b.setValue(i)
 	c.carry.setValue(0)
+	c.progressPC()
 }
 
 func (c *CPU) out_b() {
 	i := c.b.value()
 	c.output.SetValue(int(i))
 	c.carry.setValue(0)
+	c.progressPC()
 }
 
 func (c *CPU) out(i types.Immidiate) {
 	c.output.SetValue(int(i))
 	c.carry.setValue(0)
+	c.progressPC()
 }
 
 func (c *CPU) jmp(i types.Immidiate) {
 	c.pc.setValue(i)
 	c.carry.setValue(0)
+	// in JMP and JNC case, PC not count up
+	// because PC already changed
 }
 
 func (c *CPU) jnc(i types.Immidiate) {
 	if c.carry.value() == 0 {
+		// in JMP and JNC case, PC not count up
+		// because PC already changed
 		c.pc.setValue(i)
+		c.carry.setValue(0)
+		return
 	}
 	c.carry.setValue(0)
+	c.progressPC()
 }
 
 func (c *CPU) execute(o types.Opecode, i types.Immidiate) error {
 	switch o {
-	case types.ADD_A:
-		c.add_a(i)
-		return nil
-	case types.MOV_AB:
-		c.mov_ab()
-		return nil
-	case types.IN_A:
-		c.in_a()
-		return nil
-	case types.MOV_A:
-		c.mov_a(i)
-		return nil
-	case types.MOV_BA:
-		c.mov_ba()
-		return nil
-	case types.ADD_B:
-		c.add_b(i)
-		return nil
-	case types.IN_B:
-		c.in_b()
-		return nil
-	case types.MOV_B:
-		c.mov_b(i)
-		return nil
-	case types.OUT_B:
-		c.out_b()
-		return nil
-	case types.OUT:
-		c.out(i)
-		return nil
 	case types.JMP:
 		c.jmp(i)
-		return nil
 	case types.JNC:
 		c.jnc(i)
-		return nil
+	case types.ADD_A:
+		c.add_a(i)
+	case types.MOV_AB:
+		c.mov_ab()
+	case types.IN_A:
+		c.in_a()
+	case types.MOV_A:
+		c.mov_a(i)
+	case types.MOV_BA:
+		c.mov_ba()
+	case types.ADD_B:
+		c.add_b(i)
+	case types.IN_B:
+		c.in_b()
+	case types.MOV_B:
+		c.mov_b(i)
+	case types.OUT_B:
+		c.out_b()
+	case types.OUT:
+		c.out(i)
 	default:
 		return fmt.Errorf("opecode %v not exist!", o)
 	}
+	return nil
 }
 
 func (c *CPU) getPC() types.Adress {
@@ -188,6 +193,4 @@ func (c *CPU) Progress() {
 		fmt.Println(err)
 		return
 	}
-
-	c.progressPC()
 }
