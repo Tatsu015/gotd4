@@ -17,6 +17,7 @@ type CPU struct {
 	rom        *rom.ROM
 	input      *io.Input
 	output     *io.Output
+	currentPC  types.Immidiate // for debug display
 	currentOpe types.Opecode   // for debug display
 	currentImm types.Immidiate // for debug display
 }
@@ -51,34 +52,29 @@ func (c *CPU) add_a(i types.Immidiate) {
 		c.carry.setValue(0)
 	}
 	c.a.setValue(newVal)
-	c.progressPC()
 }
 
 func (c *CPU) mov_ab() {
 	im := c.b.value()
 	c.a.setValue(im)
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) in_a() {
 	i := c.input.Value()
 	c.a.setValue(i)
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) mov_a(i types.Immidiate) {
 	c.a.setValue(i)
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) mov_ba() {
 	im := c.a.value()
 	c.b.setValue(im)
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) add_b(i types.Immidiate) {
@@ -90,33 +86,28 @@ func (c *CPU) add_b(i types.Immidiate) {
 		c.carry.setValue(0)
 	}
 	c.b.setValue(newVal)
-	c.progressPC()
 }
 
 func (c *CPU) in_b() {
 	i := c.input.Value()
 	c.b.setValue(i)
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) mov_b(i types.Immidiate) {
 	c.b.setValue(i)
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) out_b() {
 	i := c.b.value()
 	c.output.SetValue(int(i))
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) out(i types.Immidiate) {
 	c.output.SetValue(int(i))
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) jmp(i types.Immidiate) {
@@ -135,7 +126,6 @@ func (c *CPU) jnc(i types.Immidiate) {
 		return
 	}
 	c.carry.setValue(0)
-	c.progressPC()
 }
 
 func (c *CPU) execute(o types.Opecode, i types.Immidiate) error {
@@ -177,6 +167,7 @@ func (c *CPU) getPC() types.Adress {
 func (c *CPU) progressPC() {
 	v := c.pc.value()
 	c.pc.setValue(v + 1)
+	c.currentPC = v
 }
 
 func (c *CPU) Progress() {
@@ -188,6 +179,9 @@ func (c *CPU) Progress() {
 	c.currentOpe, c.currentImm = c.decoder.Decode(inst)
 
 	// execute opecode and immidiate
+	// bedore execude, program counter progress
+	// because execute function maybe change PC(for ex. JMP and JMC operation)
+	c.progressPC()
 	err := c.execute(c.currentOpe, c.currentImm)
 	if err != nil {
 		fmt.Println(err)
